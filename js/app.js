@@ -15,6 +15,8 @@ function loadEventListeners() {
   listCourses.addEventListener('click', removeCourseOfCart);
   // Empty cart
   emptyCart.addEventListener('click', removeAllOfCart);
+  // Load Courses when DOM is Ready
+  document.addEventListener('DOMContentLoaded', loaddAllCoursesFromLS)
 }
 
 // Functions
@@ -33,11 +35,11 @@ function readCourseInfo(course) {
     price: course.querySelector('.precio span').textContent,
     id: course.querySelector('a').getAttribute('data-id')
   }
-  sendToCart(infoCourse);
+  printCourseInCart(infoCourse);
   saveInLocalStorage(infoCourse);
 }
 
-function sendToCart(course) {
+function printCourseInCart(course) {
   const row = document.createElement('tr');
   row.innerHTML = `
     <td>
@@ -82,4 +84,11 @@ function getFromLocalStorage() {
     coursesLS = JSON.parse(localStorage.getItem('courses'));
   }
   return coursesLS;
+}
+function loaddAllCoursesFromLS() {
+  let coursesLS;
+  coursesLS = getFromLocalStorage();
+  coursesLS.forEach(course => {
+    printCourseInCart(course);
+  });
 }
