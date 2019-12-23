@@ -4,8 +4,6 @@ const courses = document.querySelector('#lista-cursos');
 const listCourses = document.querySelector('#lista-carrito tbody');
 const emptyCart = document.querySelector('#vaciar-carrito');
 
-console.log('courses', courses)
-
 // Listeners
 loadEventListeners();
 function loadEventListeners() {
@@ -57,6 +55,7 @@ function removeCourseOfCart(e) {
   e.preventDefault();
   if (e.target.classList.contains('borrar-curso')) {
     e.target.closest('tr').remove();
+    removeFromLS(e.target.getAttribute('data-id'));
   }
 }
 function removeAllOfCart(e) {
@@ -65,6 +64,7 @@ function removeAllOfCart(e) {
   while (listCourses.firstChild) { // This way is more fast that innerHTML 
     listCourses.removeChild(listCourses.firstChild);
   }
+  removeAllFromLLS();
   return true;
 }
 
@@ -91,4 +91,16 @@ function loaddAllCoursesFromLS() {
   coursesLS.forEach(course => {
     printCourseInCart(course);
   });
+}
+function removeFromLS(course_id) {
+  let coursesLS = getFromLocalStorage();
+  coursesLS.forEach((course, index) => {
+    if (course_id === course.id) {
+      coursesLS.splice(index, 1);
+      localStorage.setItem('courses', JSON.stringify(coursesLS));
+    }
+  });
+}
+function removeAllFromLLS() {
+  localStorage.clear();
 }
