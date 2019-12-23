@@ -34,6 +34,7 @@ function readCourseInfo(course) {
     id: course.querySelector('a').getAttribute('data-id')
   }
   sendToCart(infoCourse);
+  saveInLocalStorage(infoCourse);
 }
 
 function sendToCart(course) {
@@ -63,4 +64,22 @@ function removeAllOfCart(e) {
     listCourses.removeChild(listCourses.firstChild);
   }
   return true;
+}
+
+
+function saveInLocalStorage(course) {
+  let courses;
+  courses = getFromLocalStorage();
+
+  courses.push(course);
+  localStorage.setItem('courses', JSON.stringify(courses));
+}
+function getFromLocalStorage() {
+  let coursesLS;
+  if (localStorage.getItem('courses') === null) {
+    coursesLS = [];
+  } else {
+    coursesLS = JSON.parse(localStorage.getItem('courses'));
+  }
+  return coursesLS;
 }
